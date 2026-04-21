@@ -1,0 +1,104 @@
+diff --git a/xv6-labs-2024/Makefile b/xv6-labs-2024/Makefile
+index b9d5631..0b643a7 100644
+--- a/xv6-labs-2024/Makefile
++++ b/xv6-labs-2024/Makefile
+@@ -194,7 +194,6 @@ UPROGS=\
+ 	$U/_grind\
+ 	$U/_wc\
+ 	$U/_zombie\
+-	
+ 	$U/_pgtbltest\
+ 
+ 
+diff --git a/xv6-labs-2024/kernel/vm.c b/xv6-labs-2024/kernel/vm.c
+index 3bcff97..ad2201b 100644
+--- a/xv6-labs-2024/kernel/vm.c
++++ b/xv6-labs-2024/kernel/vm.c
+@@ -516,20 +516,16 @@ void vmprint_level(pagetable_t pagetable, int level)
+ }
+ 
+ 
+-#ifdef LAB_PGTBL
+ void
+ vmprint(pagetable_t pagetable) {
+   // your code here
+   printf("page table %p\n", pagetable);
+   vmprint_level(pagetable, 0);
+ }
+-#endif
+ 
+ 
+ 
+-#ifdef LAB_PGTBL
+ pte_t*
+ pgpte(pagetable_t pagetable, uint64 va) {
+   return walk(pagetable, va, 0);
+ }
+-#endif
+diff --git a/xv6-labs-2024/user/pgtbltest.c b/xv6-labs-2024/user/pgtbltest.c
+index f4ab38d..14219f5 100644
+--- a/xv6-labs-2024/user/pgtbltest.c
++++ b/xv6-labs-2024/user/pgtbltest.c
+@@ -1,31 +1,31 @@
+-#include "kernel/types.h"
+-#include "kernel/stat.h"
+-#include "user/user.h"
+-
+-void pgaccess_test()
+-{
+-  char *buf;
+-  unsigned int abits;
+-  printf("pgaccess_test starting\n");
+-
+-  buf = malloc(32 * 4096);
+-
+-  buf[0] = 1;          // truy cập trang 0
+-  buf[2 * 4096] = 1;   // truy cập trang 2
+-
+-  if(pgaccess(buf, 3, &abits) < 0)
+-    printf("pgaccess FAILED: syscall error\n");
+-
+-  if(abits != 0b101){
+-    printf("pgaccess FAILED: expected 0b101, got %d\n", abits);
+-  } else {
+-    printf("pgaccess_test: OK\n");
+-  }
+-  free(buf);
+-}
+-
+-int main(int argc, char *argv[])
+-{
+-  pgaccess_test();
+-  exit(0);
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++void pgaccess_test()
++{
++  char *buf;
++  unsigned int abits;
++  printf("pgaccess_test starting\n");
++
++  buf = malloc(32 * 4096);
++
++  buf[0] = 1;          // truy cập trang 0
++  buf[2 * 4096] = 1;   // truy cập trang 2
++
++  if(pgaccess(buf, 3, &abits) < 0)
++    printf("pgaccess FAILED: syscall error\n");
++
++  if(abits != 0b101){
++    printf("pgaccess FAILED: expected 0b101, got %d\n", abits);
++  } else {
++    printf("pgaccess_test: OK\n");
++  }
++  free(buf);
++}
++
++int main(int argc, char *argv[])
++{
++  pgaccess_test();
++  exit(0);
+ }
+\ No newline at end of file

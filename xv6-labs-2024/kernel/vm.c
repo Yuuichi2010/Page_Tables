@@ -516,20 +516,16 @@ void vmprint_level(pagetable_t pagetable, int level)
 }
 
 
-#ifdef LAB_PGTBL
 void
 vmprint(pagetable_t pagetable) {
   // your code here
   printf("page table %p\n", pagetable);
   vmprint_level(pagetable, 0);
 }
-#endif
 
 
 
-#ifdef LAB_PGTBL
 pte_t*
 pgpte(pagetable_t pagetable, uint64 va) {
   return walk(pagetable, va, 0);
 }
-#endif
